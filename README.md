@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# Checkbox
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Preview
 
-## Available Scripts
+![checkbox-1](https://user-images.githubusercontent.com/118904460/205425979-d8ab2c28-24df-4125-83f0-a61f0e44c556.gif)
 
-In the project directory, you can run:
+## Code
 
-### `npm start`
+### src/App.js
+```javascript
+import React, { useState } from 'react';
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+export default function App() {
+  const [checked, setChecked] = useState({
+    age: true,
+    name: true,
+    membership: true,
+  });
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  const { age, name, membership } = checked;
 
-### `npm test`
+  const handleCheck = (e) => {
+    const { name } = e.target;
+    setChecked({ ...checked, [name]: !checked[name] });
+  };
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  // Object.entries & reduce 사용
+  const handleAllCheck = () => {
+    // const checkValue = isAllCheked ? false : true;
+    setChecked(
+      Object.entries(checked).reduce(
+        (acc, [key]) => ({ ...acc, [key]: !isAllCheked }),
+        {}
+      )
+    );
+  };
 
-### `npm run build`
+  // for in 반복문 사용
+  //   const handleAllCheck = () => {
+  //     let newObj = {};
+  //     for (let key in checked) {
+  //       newObj = { ...newObj, [key]: !isAllCheked };
+  //     }
+  //     setChecked(newObj);
+  //   };
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const isAllCheked = Object.values(checked).every((item) => item === true);
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  return (
+    <div style={containerStyle}>
+      <section style={sectionStyle}>
+        <div>
+          <input
+            type="checkbox"
+            checked={isAllCheked}
+            onChange={handleAllCheck}
+          />
+          전체선택
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="age"
+            checked={age}
+            onChange={handleCheck}
+          />
+          <label htmlFor="">이름</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="name"
+            checked={name}
+            onChange={handleCheck}
+          />
+          <label htmlFor="">나이</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="membership"
+            checked={membership}
+            onChange={handleCheck}
+          />
+          <label htmlFor="">멤버쉽</label>
+        </div>
+      </section>
+    </div>
+  );
+}
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+};
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+const sectionStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  position: 'absolute',
+  width: '200px',
+  height: '100%',
+};
+```
